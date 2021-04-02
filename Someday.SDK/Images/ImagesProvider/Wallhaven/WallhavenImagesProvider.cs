@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using System;
 using System.Net.Http;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace Someday.SDK
 	{
 		public override async Task<List<string>> GetRandomImagesAsync()
 		{
-			return await GetImagesAsync($"https://wallhaven.cc/api/v1/search?q=%22mountain%22&category=100&purity=100&atleast=1600x900&sorting=random&order=desc");
+			return await GetImagesAsync($"https://wallhaven.cc/api/v1/search?q=mountain&category=100&purity=100&atleast=1600x900&sorting=random&order=desc");
 		}
 
 		public override async Task<List<string>> SearchImagesAsync(SearchImagesQuery query)
@@ -22,9 +22,9 @@ namespace Someday.SDK
 
 		private async Task<List<string>> GetImagesAsync(string url)
 		{
-			string urlEncoded = HttpUtility.UrlEncode(url);
+			string urlEscaped = Uri.EscapeUriString(url);
 
-			HttpResponseMessage response = await HttpClientFactory.Get().GetAsync(urlEncoded);
+			HttpResponseMessage response = await HttpClientFactory.Get().GetAsync(urlEscaped);
 			string content = await response.Content.ReadAsStringAsync();
 
 			string dataJson = JObject.Parse(content)["data"].ToString();
