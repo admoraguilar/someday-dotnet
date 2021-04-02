@@ -10,7 +10,7 @@ namespace Someday.ConsoleUI
 		static async Task Main(string[] args)
 		{
 			ImagesClient imagesClient = new ImagesClient();
-			List<string> results = await imagesClient.GetImagesAsync();
+			List<string> results = await imagesClient.GetRandomImagesAsync();
 			foreach(string result in results) {
 				Console.WriteLine($"Images got: {result}");
 			}
