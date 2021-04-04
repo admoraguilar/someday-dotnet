@@ -1,3 +1,4 @@
+using AspNetCore.Proxy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +32,15 @@ namespace Someday.API
 			services.AddSwaggerGen(c => {
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Someday.API", Version = "v1" });
 			});
+
+			services.AddCors(setup => {
+				setup.AddPolicy("AllowAll", policy => {
+					policy.AllowAnyOrigin()
+						  .AllowAnyMethod()
+						  .AllowAnyHeader();
+				});
+			});
+			services.AddProxies();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,12 +56,15 @@ namespace Someday.API
 			app.UseSwagger();
 			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Someday.API v1"));
 
+			app.UseCors("AllowAll");
+			app.UseProxies(proxies => {
+				proxies.Map("api/proxy/{url}", proxy => proxy.UseHttp((_, args) => $"{args["url"]}"));
+			});
+
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
-
 			app.UseAuthorization();
-
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllers();
 			});

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Someday.SDK", "Someday.SDK\Someday.SDK.csproj", "{86B4EBC1-EAC1-42FE-9672-F913E430C943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Someday.SDK", "Someday.SDK\Someday.SDK.csproj", "{86B4EBC1-EAC1-42FE-9672-F913E430C943}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Someday.API", "Someday.API\Someday.API.csproj", "{055F7A9E-F0B3-4852-B3B4-CACB91AF794B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Someday.API", "Someday.API\Someday.API.csproj", "{055F7A9E-F0B3-4852-B3B4-CACB91AF794B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Someday.ConsoleUI", "Someday.ConsoleUI\Someday.ConsoleUI.csproj", "{F6E1CF68-44D5-45AC-A1E9-181D4C4B9AB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Someday.CLI", "Someday.ConsoleUI\Someday.CLI.csproj", "{F6E1CF68-44D5-45AC-A1E9-181D4C4B9AB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
