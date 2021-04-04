@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Someday.SDK", "Someday.SDK\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Someday.API", "Someday.API\Someday.API.csproj", "{055F7A9E-F0B3-4852-B3B4-CACB91AF794B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Someday.CLI", "Someday.ConsoleUI\Someday.CLI.csproj", "{F6E1CF68-44D5-45AC-A1E9-181D4C4B9AB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Someday.CLI", "Someday.CLI\Someday.CLI.csproj", "{F6E1CF68-44D5-45AC-A1E9-181D4C4B9AB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

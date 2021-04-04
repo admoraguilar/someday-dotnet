@@ -9,13 +9,13 @@ namespace Someday.CLI
 	{
 		static async Task Main(string[] args)
 		{
-			ImagesClient imagesClient = new ImagesClient();
-			List<string> results = await imagesClient.SearchImagesAsync(new SearchImagesQuery {
-				Query = "paris"
-			});
-			foreach(string result in results) {
-				Console.WriteLine($"Images got: {result}");
-			}
+			//ImagesClient imagesClient = new ImagesClient();
+			//List<string> results = await imagesClient.SearchImagesAsync(new SearchImagesQuery {
+			//	Query = "paris"
+			//});
+			//foreach(string result in results) {
+			//	Console.WriteLine($"Images got: {result}");
+			//}
 
 			//SearchRequest request = new SearchRequest()
 			//	.SetQ("anime girl")
@@ -37,6 +37,13 @@ namespace Someday.CLI
 			//foreach(Photo photo in photos) {
 			//	Console.WriteLine($"Photo: {photo.Urls.Full}");
 			//}
+
+			SomedayClientConfig somedayClientConfig = new SomedayClientConfig();
+			somedayClientConfig.LoadConfigFromProcessRelativePath("someday-config.json");
+
+			SomedayClient somedayClient = new SomedayClient(somedayClientConfig);
+			List<string> images = await somedayClient.Images.SearchImagesAsync(new SearchImagesQuery() { Query = "anime" });
+			foreach(string image in images) { Console.WriteLine($"Images got: {image}"); }
 		}
 	}
 }

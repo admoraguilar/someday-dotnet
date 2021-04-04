@@ -1,26 +1,42 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Unsplash = Someday.SDK.APIClients.Unsplash;
-using Wallhaven = Someday.SDK.APIClients.Wallhaven;
+using UnsplashAPI = Someday.SDK.APIClients.Unsplash;
+using WallhavenAPI = Someday.SDK.APIClients.Wallhaven;
 
 namespace Someday.SDK
 {
 	public class ImagesClient
 	{
+		private UnsplashAPI.UnsplashClient unsplash;
+		private WallhavenAPI.WallhavenClient wallhaven;
+
+		public ImagesClient(IReadOnlyDictionary<string, string> configs)
+		{
+			if(configs.TryGetValue("unsplash-api-key", out string unsplashApiKey)) {
+				unsplash = new UnsplashAPI.UnsplashClient(unsplashApiKey);
+			}
+
+			if(configs.TryGetValue("wallhaven-api-key", out string wallhavenApiKey)) {
+				wallhaven = new WallhavenAPI.WallhavenClient(wallhavenApiKey);
+			}
+		}
+
 		public async Task<List<string>> GetRandomImagesAsync()
 		{
 			List<string> results = new List<string>();
 
-			Wallhaven.SearchRequest wallhavenSearchRequest = new Wallhaven.SearchRequest()
-				.SetQ("anime girl")
-				.SetCategories(Wallhaven.Category.General, Wallhaven.Category.Anime, Wallhaven.Category.People)
-				.SetPurity(Wallhaven.Purity.SFW, Wallhaven.Purity.Sketchy, Wallhaven.Purity.NSFW)
-				.SetAtLeast(new Wallhaven.Dimension(1600, 900))
-				.SetSorting(Wallhaven.Sorting.Relevance)
-				.SetOrder(Wallhaven.Order.Descending);
+			if(wallhaven != null) {
+				WallhavenAPI.SearchRequest wallhavenSearchRequest = wallhaven.Search()
+					.SetQ("anime girl")
+					.SetCategories(WallhavenAPI.Category.General, WallhavenAPI.Category.Anime, WallhavenAPI.Category.People)
+					.SetPurity(WallhavenAPI.Purity.SFW, WallhavenAPI.Purity.Sketchy, WallhavenAPI.Purity.NSFW)
+					.SetAtLeast(new WallhavenAPI.Dimension(1600, 900))
+					.SetSorting(WallhavenAPI.Sorting.Relevance)
+					.SetOrder(WallhavenAPI.Order.Descending);
 
-			results.AddRange((await wallhavenSearchRequest.SendAsync()).Select(image => image.Path));
+				results.AddRange((await wallhavenSearchRequest.SendAsync()).Select(image => image.Path));
+			}
 
 			return results;
 		}
@@ -29,23 +45,27 @@ namespace Someday.SDK
 		{
 			List<string> results = new List<string>();
 
-			Unsplash.SearchPhotosRequest unsplashSearchPhotoRequest = new Unsplash.SearchPhotosRequest()
-				.SetClientId("")
-				.SetQuery(query.Query)
-				.SetOrientation(Unsplash.Orientation.Landscape)
-				.SetOrderBy(Unsplash.OrderBy.Relevant)
-				.SetPerPage(30);
+			if(unsplash != null) {
+				UnsplashAPI.SearchPhotosRequest unsplashSearchPhotoRequest = unsplash.SearchPhotos()
+					.SetQuery(query.Query)
+					.SetOrientation(UnsplashAPI.Orientation.Landscape)
+					.SetOrderBy(UnsplashAPI.OrderBy.Relevant)
+					.SetPerPage(30);
 
-			Wallhaven.SearchRequest wallhavenSearchRequest = new Wallhaven.SearchRequest()
-				.SetQ(query.Query)
-				.SetCategories(Wallhaven.Category.General, Wallhaven.Category.Anime, Wallhaven.Category.People)
-				.SetPurity(Wallhaven.Purity.SFW, Wallhaven.Purity.Sketchy, Wallhaven.Purity.NSFW)
-				.SetAtLeast(new Wallhaven.Dimension(1600, 900))
-				.SetSorting(Wallhaven.Sorting.Relevance)
-				.SetOrder(Wallhaven.Order.Descending);
+				results.AddRange((await unsplashSearchPhotoRequest.SendAsync()).Select(photo => photo.Urls.Full));
+			}
 
-			results.AddRange((await unsplashSearchPhotoRequest.SendAsync()).Select(photo => photo.Urls.Full));
-			results.AddRange((await wallhavenSearchRequest.SendAsync()).Select(image => image.Path));
+			if(wallhaven != null) {
+				WallhavenAPI.SearchRequest wallhavenSearchRequest = wallhaven.Search()
+					.SetQ(query.Query)
+					.SetCategories(WallhavenAPI.Category.General, WallhavenAPI.Category.Anime, WallhavenAPI.Category.People)
+					.SetPurity(WallhavenAPI.Purity.SFW, WallhavenAPI.Purity.Sketchy, WallhavenAPI.Purity.NSFW)
+					.SetAtLeast(new WallhavenAPI.Dimension(1600, 900))
+					.SetSorting(WallhavenAPI.Sorting.Relevance)
+					.SetOrder(WallhavenAPI.Order.Descending);
+
+				results.AddRange((await wallhavenSearchRequest.SendAsync()).Select(image => image.Path));
+			}
 
 			return results;
 		}
