@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using Someday.SDK.APIClients.Json;
 
 namespace Someday.SDK.APIClients.Google.Places
 {

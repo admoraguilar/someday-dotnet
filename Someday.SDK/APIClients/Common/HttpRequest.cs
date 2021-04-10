@@ -9,6 +9,18 @@ namespace Someday.SDK.APIClients.Common
 		protected virtual string endPoint { get; }
 		protected string query { get; private set; }
 
+		protected HttpClient client { get; private set; }
+
+		public HttpRequest()
+		{
+			client = HttpClientFactory.Get();
+		}
+
+		public HttpRequest(HttpClient client)
+		{
+			this.client = client;
+		}
+
 		protected T SetField(string name, string value)
 		{
 			if(!string.IsNullOrEmpty(query)) { query += "&"; }
@@ -18,7 +30,7 @@ namespace Someday.SDK.APIClients.Common
 
 		protected async Task<string> GetAsync()
 		{
-			HttpResponseMessage response = await HttpClientFactory.Get().GetAsync(BuildURL());
+			HttpResponseMessage response = await client.GetAsync(BuildURL());
 			return await response.Content.ReadAsStringAsync();
 		}
 

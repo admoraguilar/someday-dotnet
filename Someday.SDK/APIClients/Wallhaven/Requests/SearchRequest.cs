@@ -1,10 +1,8 @@
-﻿using System.Net.Http;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Someday.SDK.APIClients.Common;
-using Someday.SDK.APIClients.Wallhaven.Json;
 
 namespace Someday.SDK.APIClients.Wallhaven
 {
