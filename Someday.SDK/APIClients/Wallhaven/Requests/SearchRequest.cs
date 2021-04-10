@@ -8,7 +8,7 @@ using Someday.SDK.APIClients.Wallhaven.Json;
 
 namespace Someday.SDK.APIClients.Wallhaven
 {
-	public class SearchRequest : RequestBase<SearchRequest>
+	public class SearchRequest : HttpRequest<SearchRequest>
 	{
 		protected override string endPoint => "https://wallhaven.cc/api/v1/search";
 
@@ -69,8 +69,7 @@ namespace Someday.SDK.APIClients.Wallhaven
 
 		public async Task<IEnumerable<Image>> SendAsync()
 		{
-			HttpResponseMessage response = await HttpClientFactory.Get().GetAsync(BuildURL());
-			string content = await response.Content.ReadAsStringAsync();
+			string content = await GetAsync();
 			string data = JObject.Parse(content)["data"].ToString();
 			return ImageJson.DeserializeArray(data);
 		}

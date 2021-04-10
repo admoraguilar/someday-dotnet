@@ -12,12 +12,11 @@ namespace Someday.SDK.APIClients.Wallhaven.Json
 		public static Thumbs Deserialize(string json)
 		{
 			JObject jObj = JObject.Parse(json);
-			Thumbs thumbs = new Thumbs() {
+			return new Thumbs {
 				Large = (string)jObj["large"],
 				Original = (string)jObj["original"],
 				Small = (string)jObj["small"]
 			};
-			return thumbs;
 		}
 
 		public static string Serialize(Thumbs thumbs)

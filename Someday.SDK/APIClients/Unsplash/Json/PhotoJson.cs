@@ -13,7 +13,7 @@ namespace Someday.SDK.APIClients.Unsplash.Json
 		public static Photo Deserialize(string json)
 		{
 			JObject jObj = JObject.Parse(json);
-			Photo photo = new Photo {
+			return new Photo {
 				Id = jObj["id"].ToObject<string>(),
 				CreatedAt = jObj["created_at"].ToObject<DateTime>(),
 				Width = jObj["width"].ToObject<int>(),
@@ -27,7 +27,6 @@ namespace Someday.SDK.APIClients.Unsplash.Json
 				Urls = PhotoUrlsJson.Deserialize(jObj["urls"].ToString()),
 				Links = PhotoLinksJson.Deserialize(jObj["links"].ToString()),
 			};
-			return photo;
 		}
 	}
 }

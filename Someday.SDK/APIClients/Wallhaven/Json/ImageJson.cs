@@ -13,7 +13,7 @@ namespace Someday.SDK.APIClients.Wallhaven.Json
 		public static Image Deserialize(string json)
 		{
 			JObject jObj = JObject.Parse(json);
-			Image image = new Image() {
+			return new Image {
 				Id = jObj["id"].ToObject<string>(),
 				Url = jObj["url"].ToObject<string>(),
 				ShortUrl = jObj["short_url"].ToObject<string>(),
@@ -23,7 +23,7 @@ namespace Someday.SDK.APIClients.Wallhaven.Json
 				Purity = jObj["purity"].ToObject<string>(),
 				Category = jObj["category"].ToObject<string>(),
 				Resolution = new Dimension(
-					jObj["dimension_x"].ToObject<int>(), 
+					jObj["dimension_x"].ToObject<int>(),
 					jObj["dimension_y"].ToObject<int>()),
 				Ratio = jObj["ratio"].ToObject<string>(),
 				FileSize = jObj["file_size"].ToObject<int>(),
@@ -33,7 +33,6 @@ namespace Someday.SDK.APIClients.Wallhaven.Json
 				Path = jObj["path"].ToObject<string>(),
 				Thumbs = jObj["thumbs"].ToObject<Thumbs>(),
 			};
-			return image;
 		}
 
 		public static string Serialize(Image image)
