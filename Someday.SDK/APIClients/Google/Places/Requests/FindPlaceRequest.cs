@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using Someday.SDK.APIClients.Common;
-
 
 namespace Someday.SDK.APIClients.Google.Places
 {
@@ -27,10 +27,14 @@ namespace Someday.SDK.APIClients.Google.Places
 		public FindPlaceRequest SetLocationBias(string value) =>
 			SetField("locationbias", value);
 
-		public async Task<string> SendAsync()
+		public async Task<List<Place>> SendAsync()
 		{
-			string responseString = await GetAsync();
-			return responseString;
+			string content = await GetAsync();
+			System.Console.WriteLine(BuildURL());
+			System.Console.WriteLine(content);
+
+			string candidates = JObject.Parse(content)["candidates"].ToString();
+			return PlaceJson.DeserializeArray(candidates);
 		}
 	}
 }

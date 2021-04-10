@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Someday.SDK;
+using Someday.SDK.APIClients.Google.Places;
 
 namespace Someday.CLI
 {
 	public class Program
 	{
-		static async Task Main(string[] args)
+		static async Task Test()
 		{
 			//ImagesClient imagesClient = new ImagesClient();
 			//List<string> results = await imagesClient.SearchImagesAsync(new SearchImagesQuery {
@@ -37,13 +38,30 @@ namespace Someday.CLI
 			//foreach(Photo photo in photos) {
 			//	Console.WriteLine($"Photo: {photo.Urls.Full}");
 			//}
+		}
 
+		static async Task Main(string[] args)
+		{
 			SomedayClientConfig somedayClientConfig = new SomedayClientConfig();
 			somedayClientConfig.LoadConfigFromProcessRelativePath("someday-config.json");
 
 			SomedayClient somedayClient = new SomedayClient(somedayClientConfig);
-			List<string> images = await somedayClient.Images.SearchImagesAsync(new SearchImagesQuery() { Query = "anime" });
-			foreach(string image in images) { Console.WriteLine($"Images got: {image}"); }
+			//List<string> images = await somedayClient.Images.SearchImagesAsync(new SearchImagesQuery() { Query = "anime" });
+			//foreach(string image in images) { Console.WriteLine($"Images got: {image}"); }
+
+			string somedayGApiKey = "AIzaSyDQ_VPbuWsRtNgGtPgHoTAaupraVvcd8Fk";
+			List<Place> places = await new FindPlaceRequest()
+				.SetApiKey(somedayGApiKey)
+				.SetInput("paris")
+				.SetInputType(InputType.TextQuery)
+				.SetLanguage("en")
+				.SetFields(
+					Fields.Basic.FormattedAddress, Fields.Basic.Icon,
+					Fields.Basic.Name, Fields.Basic.Photos,
+					Fields.Basic.PlaceId, Fields.Basic.Types)
+				.SendAsync();
+
+			Console.WriteLine($"Got {places.Count} places.");
 		}
 	}
 }
