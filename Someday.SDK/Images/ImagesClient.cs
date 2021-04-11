@@ -8,16 +8,16 @@ namespace Someday.SDK
 {
 	public class ImagesClient
 	{
-		private UnsplashAPI.UnsplashClient unsplash;
-		private WallhavenAPI.WallhavenClient wallhaven;
+		private UnsplashAPI.UnsplashClient? unsplash;
+		private WallhavenAPI.WallhavenClient? wallhaven;
 
 		public ImagesClient(IReadOnlyDictionary<string, string> configs)
 		{
-			if(configs.TryGetValue("unsplash-api-key", out string unsplashApiKey)) {
+			if(configs.TryGetValue("unsplash-api-key", out string? unsplashApiKey)) {
 				unsplash = new UnsplashAPI.UnsplashClient(unsplashApiKey);
 			}
 
-			if(configs.TryGetValue("wallhaven-api-key", out string wallhavenApiKey)) {
+			if(configs.TryGetValue("wallhaven-api-key", out string? wallhavenApiKey)) {
 				wallhaven = new WallhavenAPI.WallhavenClient(wallhavenApiKey);
 			}
 		}
@@ -31,7 +31,7 @@ namespace Someday.SDK
 					.SetQ("anime girl")
 					.SetCategories(WallhavenAPI.Category.General, WallhavenAPI.Category.Anime, WallhavenAPI.Category.People)
 					.SetPurity(WallhavenAPI.Purity.SFW, WallhavenAPI.Purity.Sketchy, WallhavenAPI.Purity.NSFW)
-					.SetAtLeast(new WallhavenAPI.Dimension(1600, 900))
+					.SetAtLeast(new WallhavenAPI.Dimension { Width = 1600, Height = 900 })
 					.SetSorting(WallhavenAPI.Sorting.Relevance)
 					.SetOrder(WallhavenAPI.Order.Descending);
 
@@ -60,7 +60,7 @@ namespace Someday.SDK
 					.SetQ(query.Query)
 					.SetCategories(WallhavenAPI.Category.General, WallhavenAPI.Category.Anime, WallhavenAPI.Category.People)
 					.SetPurity(WallhavenAPI.Purity.SFW, WallhavenAPI.Purity.Sketchy, WallhavenAPI.Purity.NSFW)
-					.SetAtLeast(new WallhavenAPI.Dimension(1600, 900))
+					.SetAtLeast(new WallhavenAPI.Dimension { Width = 1600, Height = 900 })
 					.SetSorting(WallhavenAPI.Sorting.Relevance)
 					.SetOrder(WallhavenAPI.Order.Descending);
 

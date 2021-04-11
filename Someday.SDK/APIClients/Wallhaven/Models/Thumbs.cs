@@ -4,25 +4,25 @@ using Someday.SDK.APIClients.Json;
 
 namespace Someday.SDK.APIClients.Wallhaven
 {
-	public class Thumbs
+	public record Thumbs
 	{
-		public string Large { get; set; }
-		public string Original { get; set; }
-		public string Small { get; set; }
+		public string Large { get; init; } = string.Empty;
+		public string Original { get; init; } = string.Empty;
+		public string Small { get; init; } = string.Empty;
 	}
 
 	internal class ThumbsJson
 	{
-		public static List<Thumbs> DeserializeArray(string json) =>
+		public static Thumbs[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);
 
 		public static Thumbs Deserialize(string json)
 		{
 			JObject jObj = JObject.Parse(json);
 			return new Thumbs {
-				Large = (string)jObj["large"],
-				Original = (string)jObj["original"],
-				Small = (string)jObj["small"]
+				Large = jObj["large"]!.ToObject<string>()!,
+				Original = jObj["original"]!.ToObject<string>()!,
+				Small = jObj["small"]!.ToObject<string>()!
 			};
 		}
 

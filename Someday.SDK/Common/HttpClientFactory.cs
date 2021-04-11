@@ -20,7 +20,7 @@ namespace Someday.SDK
 
 		public static bool TryGet(string key, out HttpClient client)
 		{
-			return httpClients.TryGetValue(key, out client);
+			return httpClients.TryGetValue(key, out client!);
 		}
 
 		public static HttpClient Set(string key, HttpClient client)

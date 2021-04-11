@@ -2,11 +2,11 @@
 
 namespace Someday.SDK.APIClients.Unsplash
 {
-	public class PhotoLinks
+	public record PhotoLinks
 	{
-		public string Self { get; set; }
-		public string Html { get; set; }
-		public string Download { get; set; }
+		public string Self { get; init; } = string.Empty;
+		public string Html { get; init; } = string.Empty;
+		public string Download { get; init; } = string.Empty;
 	}
 
 	internal class PhotoLinksJson
@@ -15,9 +15,9 @@ namespace Someday.SDK.APIClients.Unsplash
 		{
 			JObject jObj = JObject.Parse(json);
 			return new PhotoLinks {
-				Self = jObj["self"].ToObject<string>(),
-				Html = jObj["html"].ToObject<string>(),
-				Download = jObj["download"].ToObject<string>()
+				Self = jObj["self"]!.ToObject<string>()!,
+				Html = jObj["html"]!.ToObject<string>()!,
+				Download = jObj["download"]!.ToObject<string>()!
 			};
 		}
 	}

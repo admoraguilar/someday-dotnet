@@ -6,27 +6,23 @@ namespace Someday.SDK.APIClients.Common
 {
 	public abstract class HttpRequest<T> where T : HttpRequest<T>
 	{
-		protected virtual string endPoint { get; }
-		protected string query { get; private set; }
+		protected abstract string EndPoint { get; }
 
-		protected HttpClient client { get; private set; }
+		private QueryBuilder queryBuilder { get; } = new("&");
+		private HttpClient client { get; init; }
 
-		public HttpRequest()
-		{
-			client = HttpClientFactory.Get();
-		}
+		public HttpRequest() => client = HttpClientFactory.Get();
 
-		public HttpRequest(HttpClient client)
-		{
-			this.client = client;
-		}
+		public HttpRequest(HttpClient client) => this.client = client;
 
-		protected T SetField(string name, string value)
-		{
-			if(!string.IsNullOrEmpty(query)) { query += "&"; }
-			query += $"{name}={value}";
-			return (T)this;
-		}
+		protected T SetQueryField(string name, object value) =>
+			DoAction(() => queryBuilder.SetField(name, value));
+
+		protected T AddQueryField(string name, object value) =>
+			DoAction(() => queryBuilder.AddField(name, value));
+
+		protected T RemoveQueryField(string name) =>
+			DoAction(() => queryBuilder.RemoveField(name));
 
 		protected async Task<string> GetAsync()
 		{
@@ -36,9 +32,18 @@ namespace Someday.SDK.APIClients.Common
 
 		protected string BuildURL()
 		{
-			string url = endPoint;
+			string url = EndPoint;
+
+			string query = queryBuilder.Build();
 			if(!string.IsNullOrEmpty(query)) { url += $"?{query}"; }
+			
 			return Uri.EscapeUriString(url);
+		}
+
+		private T DoAction(Action action)
+		{
+			action();
+			return (T)this;
 		}
 	}
 }

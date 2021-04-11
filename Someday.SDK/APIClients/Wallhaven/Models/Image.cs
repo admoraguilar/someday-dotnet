@@ -5,53 +5,54 @@ using Someday.SDK.APIClients.Json;
 
 namespace Someday.SDK.APIClients.Wallhaven
 {
-	public class Image
+	public record Image
 	{
-		public string Id { get; set; }
-		public string Url { get; set; }
-		public string ShortUrl { get; set; }
-		public int Views { get; set; }
-		public int Favorites { get; set; }
-		public string Source { get; set; }
-		public string Purity { get; set; }
-		public string Category { get; set; }
-		public Dimension Resolution { get; set; }
-		public string Ratio { get; set; }
-		public int FileSize { get; set; }
-		public string FileType { get; set; }
-		public DateTimeOffset CreatedAt { get; set; }
-		public string[] Colors { get; set; }
-		public string Path { get; set; }
-		public Thumbs Thumbs { get; set; }
+		public string Id { get; init; } = string.Empty;
+		public string Url { get; init; } = string.Empty;
+		public string ShortUrl { get; init; } = string.Empty;
+		public int Views { get; init; } = 0;
+		public int Favorites { get; init; } = 0;
+		public string Source { get; init; } = string.Empty;
+		public string Purity { get; init; } = string.Empty;
+		public string Category { get; init; } = string.Empty;
+		public Dimension Resolution { get; init; } = new();
+		public string Ratio { get; init; } = string.Empty;
+		public int FileSize { get; init; } = 0;
+		public string FileType { get; init; } = string.Empty;
+		public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.MinValue;
+		public string[] Colors { get; init; } = Array.Empty<string>();
+		public string Path { get; init; } = string.Empty;
+		public Thumbs Thumbs { get; init; } = new();
 	}
 
 	internal class ImageJson
 	{
-		public static List<Image> DeserializeArray(string json) =>
+		public static Image[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);
 
 		public static Image Deserialize(string json)
 		{
 			JObject jObj = JObject.Parse(json);
 			return new Image {
-				Id = jObj["id"].ToObject<string>(),
-				Url = jObj["url"].ToObject<string>(),
-				ShortUrl = jObj["short_url"].ToObject<string>(),
-				Views = jObj["views"].ToObject<int>(),
-				Favorites = jObj["favorites"].ToObject<int>(),
-				Source = jObj["source"].ToObject<string>(),
-				Purity = jObj["purity"].ToObject<string>(),
-				Category = jObj["category"].ToObject<string>(),
-				Resolution = new Dimension(
-					jObj["dimension_x"].ToObject<int>(),
-					jObj["dimension_y"].ToObject<int>()),
-				Ratio = jObj["ratio"].ToObject<string>(),
-				FileSize = jObj["file_size"].ToObject<int>(),
-				FileType = jObj["file_type"].ToObject<string>(),
-				CreatedAt = jObj["created_at"].ToObject<DateTime>(),
-				Colors = JArray.FromObject(jObj["colors"]).ToObject<string[]>(),
-				Path = jObj["path"].ToObject<string>(),
-				Thumbs = jObj["thumbs"].ToObject<Thumbs>(),
+				Id = jObj["id"]!.ToObject<string>()!,
+				Url = jObj["url"]!.ToObject<string>()!,
+				ShortUrl = jObj["short_url"]!.ToObject<string>()!,
+				Views = jObj["views"]!.ToObject<int>(),
+				Favorites = jObj["favorites"]!.ToObject<int>(),
+				Source = jObj["source"]!.ToObject<string>()!,
+				Purity = jObj["purity"]!.ToObject<string>()!,
+				Category = jObj["category"]!.ToObject<string>()!,
+				Resolution = new Dimension {
+					Width = jObj["dimension_x"]!.ToObject<int>(),
+					Height = jObj["dimension_y"]!.ToObject<int>()
+				},
+				Ratio = jObj["ratio"]!.ToObject<string>()!,
+				FileSize = jObj["file_size"]!.ToObject<int>()!,
+				FileType = jObj["file_type"]!.ToObject<string>()!,
+				CreatedAt = jObj["created_at"]!.ToObject<DateTime>(),
+				Colors = JArray.FromObject(jObj["colors"]!).ToObject<string[]>()!,
+				Path = jObj["path"]!.ToObject<string>()!,
+				Thumbs = ThumbsJson.Deserialize(jObj["thumbs"]!.ToString()),
 			};
 		}
 

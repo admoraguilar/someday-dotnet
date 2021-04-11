@@ -2,66 +2,62 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Someday.SDK;
-using Someday.SDK.APIClients.Google.Places;
+using Someday.SDK.APIClients.Common;
+
+using GooglePlaces = Someday.SDK.APIClients.Google.Places;
+using HereGeocodingAndSearch = Someday.SDK.APIClients.Here.GeocodingAndSearch;
+using System.Linq;
 
 namespace Someday.CLI
 {
 	public class Program
 	{
-		static async Task Test()
+		static async Task TestImagesClient(SomedayClient somedayClient)
 		{
-			//ImagesClient imagesClient = new ImagesClient();
-			//List<string> results = await imagesClient.SearchImagesAsync(new SearchImagesQuery {
-			//	Query = "paris"
-			//});
-			//foreach(string result in results) {
-			//	Console.WriteLine($"Images got: {result}");
-			//}
+			List<string> images = await somedayClient.Images.SearchImagesAsync(
+				new SearchImagesQuery() { Query = "anime" });
+			foreach(string image in images) { Console.WriteLine($"Images got: {image}"); }
+		}
 
-			//SearchRequest request = new SearchRequest()
-			//	.SetQ("anime girl")
-			//	.SetCategories(Category.General, Category.Anime)
-			//	.SetPurity(Purity.SFW, Purity.Sketchy)
-			//	.SetAtLeast(new Dimension(1600, 900));
+		static async Task TestGooglePlaces(SomedayClientConfig config)
+		{
+			string somedayGApiKey = config["google-cloud-api-key"];
+			GooglePlaces.Place[] places = await new GooglePlaces.FindPlaceRequest()
+				.SetApiKey(somedayGApiKey)
+				.SetInput("paris")
+				.SetInputType(GooglePlaces.InputType.TextQuery)
+				.SetLanguage("en")
+				.SetFields(
+					GooglePlaces.Fields.Basic.FormattedAddress, GooglePlaces.Fields.Basic.Icon,
+					GooglePlaces.Fields.Basic.Name, GooglePlaces.Fields.Basic.Photos,
+					GooglePlaces.Fields.Basic.PlaceId, GooglePlaces.Fields.Basic.Types)
+				.SendAsync();
 
-			//IEnumerable<Image> images = await request.SendAsync();
-			//foreach(Image image in images) {
-			//	Console.WriteLine($"Image: {image.Path}");
-			//}
+			Console.WriteLine($"Got {places.Length} places.");
+		}
 
-			//SearchPhotosRequest request = new SearchPhotosRequest()
-			//	.SetClientId("api key")
-			//	.SetQuery("paris")
-			//	.SetPerPage(30);
+		static async Task TestHere(SomedayClientConfig config)
+		{
+			string hereApiKey = config["here-api-key"];
 
-			//IEnumerable<Photo> photos = await request.SendAsync();
-			//foreach(Photo photo in photos) {
-			//	Console.WriteLine($"Photo: {photo.Urls.Full}");
-			//}
+			HereGeocodingAndSearch.GeocodeAndSearchResult[] results = 
+				await new HereGeocodingAndSearch.GeocodeRequest()
+				.SetApiKey(hereApiKey)
+				.SetQ("Sta. Ana, Manila")
+				.SendAsync();
+
+			Console.WriteLine($"Results count: {results.Count()}");
 		}
 
 		static async Task Main(string[] args)
 		{
 			SomedayClientConfig somedayClientConfig = new SomedayClientConfig();
 			somedayClientConfig.LoadConfigFromProcessRelativePath("someday-config.json");
-
 			SomedayClient somedayClient = new SomedayClient(somedayClientConfig);
-			//List<string> images = await somedayClient.Images.SearchImagesAsync(new SearchImagesQuery() { Query = "anime" });
-			//foreach(string image in images) { Console.WriteLine($"Images got: {image}"); }
 
-			string somedayGApiKey = "AIzaSyDQ_VPbuWsRtNgGtPgHoTAaupraVvcd8Fk";
-			List<Place> places = await new FindPlaceRequest()
-				.SetApiKey(somedayGApiKey)
-				.SetInput("paris")
-				.SetInputType(InputType.TextQuery)
-				.SetLanguage("en")
-				.SetFields(
-					Fields.Basic.FormattedAddress, Fields.Basic.Icon,
-					Fields.Basic.Name, Fields.Basic.Photos,
-					Fields.Basic.PlaceId, Fields.Basic.Types)
-				.SendAsync();
+			await TestHere(somedayClientConfig);
 
-			Console.WriteLine($"Got {places.Count} places.");
+			Console.ReadLine();
 		}
 	}
 }

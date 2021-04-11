@@ -1,15 +1,9 @@
 ﻿
 namespace Someday.SDK.APIClients.Wallhaven
 {
-	public class Dimension
+	public record Dimension
 	{
-		public int Width { get; set; }
-		public int Height { get; set; }
-
-		public Dimension(int width, int height)
-		{
-			Width = width;
-			Height = height;
-		}
+		public int Width { get; init; } = 0;
+		public int Height { get; init; } = 0;
 	}
 }
