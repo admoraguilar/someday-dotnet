@@ -19,7 +19,7 @@ namespace Someday.SDK.APIClients.Here.GeocodingAndSearch
 			JObject jObj = JObject.Parse(json);
 			return new ContactInfo {
 				Value = jObj["value"]!.ToObject<string>()!,
-				Categories = CategoryJson.DeserializeArray(jObj["categories"]!.ToString()),
+				Categories = jObj.ContainsKey("categories") ? CategoryJson.DeserializeArray(jObj["categories"]!.ToString()) : null,
 			};
 		}
 	}

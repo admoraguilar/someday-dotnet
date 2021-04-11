@@ -43,7 +43,7 @@ namespace Someday.CLI
 			HereGeocodingAndSearch.GeocodeAndSearchResult[] results = 
 				await new HereGeocodingAndSearch.GeocodeRequest()
 				.SetApiKey(hereApiKey)
-				.SetQ("Sta. Ana, Manila")
+				.SetQ("Greenbelt Makati Manila")
 				.SendAsync();
 
 			Console.WriteLine($"Results count: {results.Count()}");

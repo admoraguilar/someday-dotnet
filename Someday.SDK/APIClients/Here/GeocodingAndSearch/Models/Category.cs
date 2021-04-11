@@ -6,8 +6,8 @@ namespace Someday.SDK.APIClients.Here.GeocodingAndSearch
 	public record Category
 	{
 		public string Id { get; init; } = string.Empty;
-		public string Name { get; init; } = string.Empty;
-		public bool Primary { get; init; } = false;
+		public string? Name { get; init; } = string.Empty;
+		public bool? Primary { get; init; } = false;
 	}
 
 	public class CategoryJson
@@ -20,8 +20,8 @@ namespace Someday.SDK.APIClients.Here.GeocodingAndSearch
 			JObject jObj = JObject.Parse(json);
 			return new Category {
 				Id = jObj["id"]!.ToObject<string>()!,
-				Name = jObj["name"]!.ToObject<string>()!,
-				Primary = jObj["primary"]!.ToObject<bool>()!,
+				Name = jObj["name"]?.ToObject<string>()!,
+				Primary = jObj["primary"]?.ToObject<bool>(),
 			};
 		}
 	}

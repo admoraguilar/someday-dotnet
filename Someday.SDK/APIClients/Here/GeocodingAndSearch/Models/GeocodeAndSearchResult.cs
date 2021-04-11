@@ -21,7 +21,8 @@ namespace Someday.SDK.APIClients.Here.GeocodingAndSearch
 
 			string resultType = jObj["resultType"]!.ToObject<string>()!;
 			return resultType switch {
-				"place" or "locality" or "street" or
+				"place" => PlaceJson.Deserialize(jObj.ToString()),
+				"locality" or "street" or
 				"houseNumber" or "administrativeArea" or "addressBlock" or
 				"intersection" or "postalCodePoint" => AddressJson.Deserialize(jObj.ToString()),
 				_ => DeserializeDirect(json),
