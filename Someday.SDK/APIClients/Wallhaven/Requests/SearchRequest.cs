@@ -8,7 +8,7 @@ namespace Someday.SDK.APIClients.Wallhaven
 {
 	public class SearchRequest : HttpRequest<SearchRequest>
 	{
-		protected override string endPoint => "https://wallhaven.cc/api/v1/search";
+		protected override string EndPoint => "https://wallhaven.cc/api/v1/search";
 
 		public SearchRequest SetQ(string value) =>
 			SetField("q", value);
@@ -68,10 +68,11 @@ namespace Someday.SDK.APIClients.Wallhaven
 		public async Task<IEnumerable<Image>> SendAsync()
 		{
 			string content = await GetAsync();
-			string data = JObject.Parse(content)["data"].ToString();
+			string data = JObject.Parse(content)["data"]!.ToObject<string>()!;
 			return ImageJson.DeserializeArray(data);
 		}
 
-		private string AppendStringFlagIf(ref string str, bool condition) => str += condition ? "1" : "0";
+		private string AppendStringFlagIf(ref string str, bool condition) => 
+			str += condition ? "1" : "0";
 	}
 }

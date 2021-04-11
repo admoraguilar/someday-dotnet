@@ -1,7 +1,7 @@
 ﻿
 namespace Someday.SDK.APIClients.Wallhaven
 {
-	public static class TopRange
+	public class TopRange
 	{
 		public const string TR1D = "1d";
 		public const string TR3D = "3d";

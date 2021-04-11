@@ -7,7 +7,7 @@ namespace Someday.SDK.APIClients.Google.Places
 {
 	public class FindPlaceRequest : HttpRequest<FindPlaceRequest>
 	{
-		protected override string endPoint => "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
+		protected override string EndPoint => "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
 
 		public FindPlaceRequest SetApiKey(string value) =>
 			SetField("key", value);
@@ -30,10 +30,7 @@ namespace Someday.SDK.APIClients.Google.Places
 		public async Task<List<Place>> SendAsync()
 		{
 			string content = await GetAsync();
-			System.Console.WriteLine(BuildURL());
-			System.Console.WriteLine(content);
-
-			string candidates = JObject.Parse(content)["candidates"].ToString();
+			string candidates = JObject.Parse(content)["candidates"]!.ToObject<string>()!;
 			return PlaceJson.DeserializeArray(candidates);
 		}
 	}

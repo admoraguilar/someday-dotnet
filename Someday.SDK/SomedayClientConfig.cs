@@ -29,13 +29,13 @@ namespace Someday.SDK
 			((IEnumerable<KeyValuePair<string, string>>)configs).GetEnumerator();
 
 		public bool TryGetValue(string key, out string value) =>
-			((IReadOnlyDictionary<string, string>)configs).TryGetValue(key, out value);
+			((IReadOnlyDictionary<string, string>)configs).TryGetValue(key, out value!);
 
 		public void LoadConfigFromProcessRelativePath(string relativePath)
 		{
-			string appPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+			string appPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule?.FileName)!;
 			string text = File.ReadAllText($"{appPath}/{relativePath}");
-			configs = JsonConvert.DeserializeObject<Dictionary<string, string>>(text);
+			configs = JsonConvert.DeserializeObject<Dictionary<string, string>>(text)!;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() =>

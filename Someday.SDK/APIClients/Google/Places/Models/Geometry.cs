@@ -4,10 +4,10 @@ using Someday.SDK.APIClients.Json;
 
 namespace Someday.SDK.APIClients.Google.Places
 {
-	public class Geometry
+	public record Geometry
 	{
-		public GeographicCoordinate Location { get; set; }
-		public GeographicViewport Viewport { get; set; }
+		public GeoCoordinate Location { get; init; } = new();
+		public GeoViewport Viewport { get; init; } = new();
 	}
 
 	internal class GeometryJson
@@ -19,8 +19,8 @@ namespace Someday.SDK.APIClients.Google.Places
 		{
 			JObject jObj = JObject.Parse(json);
 			return new Geometry {
-				Location = GeographicCoordinateJson.Deserialize(jObj["location"].ToString()),
-				Viewport = GeographicViewportJson.Deserialize(jObj["viewport"].ToString()),
+				Location = GeoCoordinateJson.Deserialize(jObj["location"]!.ToObject<string>()!),
+				Viewport = GeoViewportJson.Deserialize(jObj["viewport"]!.ToObject<string>()!),
 			};
 		}
 	}

@@ -1,7 +1,7 @@
 ﻿
 namespace Someday.SDK.APIClients.Wallhaven
 {
-	public static class Sorting
+	public class Sorting
 	{
 		public const string DateAdded = "date_added";
 		public const string Relevance = "relevance";

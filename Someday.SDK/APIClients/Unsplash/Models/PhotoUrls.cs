@@ -2,13 +2,13 @@
 
 namespace Someday.SDK.APIClients.Unsplash
 {
-	public class PhotoUrls
+	public record PhotoUrls
 	{
-		public string Raw { get; set; }
-		public string Full { get; set; }
-		public string Regular { get; set; }
-		public string Small { get; set; }
-		public string Thumb { get; set; }
+		public string Raw { get; init; } = string.Empty;
+		public string Full { get; init; } = string.Empty;
+		public string Regular { get; init; } = string.Empty;
+		public string Small { get; init; } = string.Empty;
+		public string Thumb { get; init; } = string.Empty;
 	}
 
 	internal class PhotoUrlsJson
@@ -17,11 +17,11 @@ namespace Someday.SDK.APIClients.Unsplash
 		{
 			JObject jObj = JObject.Parse(json);
 			return new PhotoUrls {
-				Raw = jObj["raw"].ToObject<string>(),
-				Full = jObj["full"].ToObject<string>(),
-				Regular = jObj["regular"].ToObject<string>(),
-				Small = jObj["small"].ToObject<string>(),
-				Thumb = jObj["thumb"].ToObject<string>(),
+				Raw = jObj["raw"]!.ToObject<string>()!,
+				Full = jObj["full"]!.ToObject<string>()!,
+				Regular = jObj["regular"]!.ToObject<string>()!,
+				Small = jObj["small"]!.ToObject<string>()!,
+				Thumb = jObj["thumb"]!.ToObject<string>()!,
 			};
 		}
 	}

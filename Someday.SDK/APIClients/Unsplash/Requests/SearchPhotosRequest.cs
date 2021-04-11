@@ -7,7 +7,7 @@ namespace Someday.SDK.APIClients.Unsplash
 {
 	public class SearchPhotosRequest : HttpRequest<SearchPhotosRequest>
 	{
-		protected override string endPoint => "https://api.unsplash.com/search/photos";
+		protected override string EndPoint => "https://api.unsplash.com/search/photos";
 
 		public SearchPhotosRequest SetClientId(string value) =>
 			SetField("client_id", value);
@@ -45,7 +45,7 @@ namespace Someday.SDK.APIClients.Unsplash
 		public async Task<IEnumerable<Photo>> SendAsync()
 		{
 			string content = await GetAsync();
-			string results = JObject.Parse(content)["results"].ToString();
+			string results = JObject.Parse(content)["results"]!.ToObject<string>()!;
 			return PhotoJson.DeserializeArray(results);
 		}
 	}

@@ -10,6 +10,7 @@ namespace Someday.SDK.APIClients.Unsplash
 			this.apiKey = apiKey;
 		}
 
-		public SearchPhotosRequest SearchPhotos() => new SearchPhotosRequest().SetClientId(apiKey);
+		public SearchPhotosRequest SearchPhotos() => 
+			new SearchPhotosRequest().SetClientId(apiKey);
 	}
 }

@@ -1,4 +1,5 @@
-﻿namespace Someday.SDK.APIClients.Google.Places
+﻿
+namespace Someday.SDK.APIClients.Google.Places
 {
 	public class InputType
 	{

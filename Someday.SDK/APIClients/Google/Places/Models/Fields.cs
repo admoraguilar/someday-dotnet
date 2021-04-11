@@ -1,4 +1,5 @@
-﻿namespace Someday.SDK.APIClients.Google.Places
+﻿
+namespace Someday.SDK.APIClients.Google.Places
 {
 	/// <summary>
 	/// Place Data Fields: https://developers.google.com/maps/documentation/places/web-service/place-data-fields

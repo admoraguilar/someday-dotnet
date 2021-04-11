@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Someday.SDK;
@@ -14,16 +15,22 @@ namespace Someday.API.Controllers
 		[Route("api/v1/images/random")]
 		public async Task<IEnumerable<string>> Random()
 		{
-			ImagesClient imagesClient = new ImagesClient();
-			return await imagesClient.GetRandomImagesAsync();
+			//ImagesClient imagesClient = new ImagesClient();
+			//return await imagesClient.GetRandomImagesAsync();
+
+			await Task.CompletedTask;
+			return Enumerable.Empty<string>();
 		}
 
 		[HttpGet]
 		[Route("api/v1/images/search")]
 		public async Task<IEnumerable<string>> Search([FromQuery] SearchImagesQuery searchQuery)
 		{
-			ImagesClient imagesClient = new ImagesClient();
-			return await imagesClient.SearchImagesAsync(searchQuery);
+			//ImagesClient imagesClient = new ImagesClient();
+			//return await imagesClient.SearchImagesAsync(searchQuery);
+
+			await Task.CompletedTask;
+			return Enumerable.Empty<string>();
 		}
 	}
 }

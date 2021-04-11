@@ -8,16 +8,16 @@ namespace Someday.SDK
 {
 	public class ImagesClient
 	{
-		private UnsplashAPI.UnsplashClient unsplash;
-		private WallhavenAPI.WallhavenClient wallhaven;
+		private UnsplashAPI.UnsplashClient? unsplash;
+		private WallhavenAPI.WallhavenClient? wallhaven;
 
 		public ImagesClient(IReadOnlyDictionary<string, string> configs)
 		{
-			if(configs.TryGetValue("unsplash-api-key", out string unsplashApiKey)) {
+			if(configs.TryGetValue("unsplash-api-key", out string? unsplashApiKey)) {
 				unsplash = new UnsplashAPI.UnsplashClient(unsplashApiKey);
 			}
 
-			if(configs.TryGetValue("wallhaven-api-key", out string wallhavenApiKey)) {
+			if(configs.TryGetValue("wallhaven-api-key", out string? wallhavenApiKey)) {
 				wallhaven = new WallhavenAPI.WallhavenClient(wallhavenApiKey);
 			}
 		}
