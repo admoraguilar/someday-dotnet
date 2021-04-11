@@ -23,7 +23,7 @@ namespace Someday.SDK.APIClients.Unsplash
 
 	internal class PhotoJson
 	{
-		public static List<Photo> DeserializeArray(string json) =>
+		public static Photo[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);
 
 		public static Photo Deserialize(string json)
@@ -40,8 +40,8 @@ namespace Someday.SDK.APIClients.Unsplash
 				LikedByUser = jObj["liked_by_user"]!.ToObject<bool>(),
 				Description = jObj["description"]!.ToObject<string>()!,
 				CurrentUserCollections = JArray.FromObject(jObj["current_user_collections"]!).ToObject<string[]>()!,
-				Urls = PhotoUrlsJson.Deserialize(jObj["urls"]!.ToObject<string>()!),
-				Links = PhotoLinksJson.Deserialize(jObj["links"]!.ToObject<string>()!),
+				Urls = PhotoUrlsJson.Deserialize(jObj["urls"]!.ToString()),
+				Links = PhotoLinksJson.Deserialize(jObj["links"]!.ToString()),
 			};
 		}
 	}

@@ -13,7 +13,7 @@ namespace Someday.SDK.APIClients.Wallhaven
 
 	internal class ThumbsJson
 	{
-		public static List<Thumbs> DeserializeArray(string json) =>
+		public static Thumbs[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);
 
 		public static Thumbs Deserialize(string json)

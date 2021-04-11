@@ -1,26 +1,25 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Someday.SDK.APIClients.Json;
 
 namespace Someday.SDK.APIClients.Google.Places
 {
-	public record GeoViewport
+	public record Geoviewport
 	{
-		public GeoCoordinate NorthEast { get; init; } = new();
-		public GeoCoordinate SouthWest { get; init; } = new();
+		public Geocoordinate NorthEast { get; init; } = new();
+		public Geocoordinate SouthWest { get; init; } = new();
 	}
 
-	internal class GeoViewportJson
+	internal class GeoviewportJson
 	{
-		public static List<GeoViewport> DeserializeArray(string json) =>
+		public static Geoviewport[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);
 
-		public static GeoViewport Deserialize(string json)
+		public static Geoviewport Deserialize(string json)
 		{
 			JObject jObj = JObject.Parse(json);
-			return new GeoViewport {
-				NorthEast = GeoCoordinateJson.Deserialize(jObj["northeast"]!.ToObject<string>()!),
-				SouthWest = GeoCoordinateJson.Deserialize(jObj["southwest"]!.ToObject<string>()!)
+			return new Geoviewport {
+				NorthEast = GeocoordinateJson.Deserialize(jObj["northeast"]!.ToString()),
+				SouthWest = GeocoordinateJson.Deserialize(jObj["southwest"]!.ToString())
 			};
 		}
 	}

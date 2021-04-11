@@ -8,37 +8,42 @@ namespace Someday.SDK.APIClients.Common
 	{
 		protected abstract string EndPoint { get; }
 
-		protected string Query { get; private set; } = string.Empty;
-		protected HttpClient Client { get; init; }
+		private QueryBuilder queryBuilder { get; } = new("&");
+		private HttpClient client { get; init; }
 
-		public HttpRequest()
-		{
-			Client = HttpClientFactory.Get();
-		}
+		public HttpRequest() => client = HttpClientFactory.Get();
 
-		public HttpRequest(HttpClient client)
-		{
-			Client = client;
-		}
+		public HttpRequest(HttpClient client) => this.client = client;
 
-		protected T SetField(string name, string value)
-		{
-			if(!string.IsNullOrEmpty(Query)) { Query += "&"; }
-			Query += $"{name}={value}";
-			return (T)this;
-		}
+		protected T SetQueryField(string name, object value) =>
+			DoAction(() => queryBuilder.SetField(name, value));
+
+		protected T AddQueryField(string name, object value) =>
+			DoAction(() => queryBuilder.AddField(name, value));
+
+		protected T RemoveQueryField(string name) =>
+			DoAction(() => queryBuilder.RemoveField(name));
 
 		protected async Task<string> GetAsync()
 		{
-			HttpResponseMessage response = await Client.GetAsync(BuildURL());
+			HttpResponseMessage response = await client.GetAsync(BuildURL());
 			return await response.Content.ReadAsStringAsync();
 		}
 
 		protected string BuildURL()
 		{
 			string url = EndPoint;
-			if(!string.IsNullOrEmpty(Query)) { url += $"?{Query}"; }
+
+			string query = queryBuilder.Build();
+			if(!string.IsNullOrEmpty(query)) { url += $"?{query}"; }
+			
 			return Uri.EscapeUriString(url);
+		}
+
+		private T DoAction(Action action)
+		{
+			action();
+			return (T)this;
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Someday.SDK.APIClients.Wallhaven
 		protected override string EndPoint => "https://wallhaven.cc/api/v1/search";
 
 		public SearchRequest SetQ(string value) =>
-			SetField("q", value);
+			SetQueryField("q", value);
 
 		public SearchRequest SetCategories(params string[] values)
 		{
@@ -19,7 +19,7 @@ namespace Someday.SDK.APIClients.Wallhaven
 			AppendStringFlagIf(ref catStr, values.Contains(Category.General));
 			AppendStringFlagIf(ref catStr, values.Contains(Category.Anime));
 			AppendStringFlagIf(ref catStr, values.Contains(Category.People));
-			return SetField("categories", catStr);
+			return SetQueryField("categories", catStr);
 		}
 
 		public SearchRequest SetPurity(params string[] values)
@@ -28,20 +28,20 @@ namespace Someday.SDK.APIClients.Wallhaven
 			AppendStringFlagIf(ref purStr, values.Contains(Purity.SFW));
 			AppendStringFlagIf(ref purStr, values.Contains(Purity.Sketchy));
 			AppendStringFlagIf(ref purStr, values.Contains(Purity.NSFW));
-			return SetField("purity", purStr);
+			return SetQueryField("purity", purStr);
 		}
 
 		public SearchRequest SetSorting(string value) =>
-			SetField("sorting", value);
+			SetQueryField("sorting", value);
 
 		public SearchRequest SetOrder(string value) =>
-			SetField("order", value);
+			SetQueryField("order", value);
 
 		public SearchRequest SetTopRange(string value) =>
-			SetField("topRange", value);
+			SetQueryField("topRange", value);
 
 		public SearchRequest SetAtLeast(Dimension value) =>
-			SetField("atleast", $"{value.Width}x{value.Height}");
+			SetQueryField("atleast", $"{value.Width}x{value.Height}");
 
 		public SearchRequest SetResolutions(Dimension[] dimensions)
 		{
@@ -50,25 +50,25 @@ namespace Someday.SDK.APIClients.Wallhaven
 				dimStr += $"{dimension.Width}x{dimension.Height},";
 			}
 			dimStr = dimStr.Substring(0, dimStr.Length - 1);
-			return SetField("resolutions", dimStr);
+			return SetQueryField("resolutions", dimStr);
 		}
 
 		public SearchRequest SetRatios(Dimension value) =>
-			SetField("ratios", $"{value.Width}x{value.Height}");
+			SetQueryField("ratios", $"{value.Width}x{value.Height}");
 
 		public SearchRequest SetColor(string value) =>
-			SetField("colors", value);
+			SetQueryField("colors", value);
 
 		public SearchRequest SetPage(int value) =>
-			SetField("page", value.ToString());
+			SetQueryField("page", value);
 
 		public SearchRequest SetSeed(string value) =>
-			SetField("seed", value);
+			SetQueryField("seed", value);
 
 		public async Task<IEnumerable<Image>> SendAsync()
 		{
 			string content = await GetAsync();
-			string data = JObject.Parse(content)["data"]!.ToObject<string>()!;
+			string data = JObject.Parse(content)["data"]!.ToString();
 			return ImageJson.DeserializeArray(data);
 		}
 

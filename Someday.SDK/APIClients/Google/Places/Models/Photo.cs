@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Someday.SDK.APIClients.Json;
 
@@ -15,7 +14,7 @@ namespace Someday.SDK.APIClients.Google.Places
 
 	internal class PhotoJson
 	{
-		public static List<Photo> DeserializeArray(string json) =>
+		public static Photo[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);
 
 		public static Photo Deserialize(string json)

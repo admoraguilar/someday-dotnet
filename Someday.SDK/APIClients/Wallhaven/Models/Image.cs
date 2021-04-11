@@ -15,7 +15,7 @@ namespace Someday.SDK.APIClients.Wallhaven
 		public string Source { get; init; } = string.Empty;
 		public string Purity { get; init; } = string.Empty;
 		public string Category { get; init; } = string.Empty;
-		public Dimension Resolution { get; init; } = new(0, 0);
+		public Dimension Resolution { get; init; } = new();
 		public string Ratio { get; init; } = string.Empty;
 		public int FileSize { get; init; } = 0;
 		public string FileType { get; init; } = string.Empty;
@@ -27,7 +27,7 @@ namespace Someday.SDK.APIClients.Wallhaven
 
 	internal class ImageJson
 	{
-		public static List<Image> DeserializeArray(string json) =>
+		public static Image[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);
 
 		public static Image Deserialize(string json)
@@ -42,16 +42,17 @@ namespace Someday.SDK.APIClients.Wallhaven
 				Source = jObj["source"]!.ToObject<string>()!,
 				Purity = jObj["purity"]!.ToObject<string>()!,
 				Category = jObj["category"]!.ToObject<string>()!,
-				Resolution = new Dimension(
-					jObj["dimension_x"]!.ToObject<int>(),
-					jObj["dimension_y"]!.ToObject<int>()),
+				Resolution = new Dimension {
+					Width = jObj["dimension_x"]!.ToObject<int>(),
+					Height = jObj["dimension_y"]!.ToObject<int>()
+				},
 				Ratio = jObj["ratio"]!.ToObject<string>()!,
 				FileSize = jObj["file_size"]!.ToObject<int>()!,
 				FileType = jObj["file_type"]!.ToObject<string>()!,
 				CreatedAt = jObj["created_at"]!.ToObject<DateTime>(),
 				Colors = JArray.FromObject(jObj["colors"]!).ToObject<string[]>()!,
 				Path = jObj["path"]!.ToObject<string>()!,
-				Thumbs = ThumbsJson.Deserialize(jObj["thumbs"]!.ToObject<string>()!),
+				Thumbs = ThumbsJson.Deserialize(jObj["thumbs"]!.ToString()),
 			};
 		}
 

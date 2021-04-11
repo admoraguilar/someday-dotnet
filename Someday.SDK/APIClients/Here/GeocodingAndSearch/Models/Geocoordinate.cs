@@ -1,15 +1,17 @@
 ﻿using Newtonsoft.Json.Linq;
 using Someday.SDK.APIClients.Json;
 
-namespace Someday.SDK.APIClients.Google.Places
+namespace Someday.SDK.APIClients.Here.GeocodingAndSearch
 {
 	public record Geocoordinate
 	{
 		public decimal Latitude { get; init; } = 0;
 		public decimal Longtitude { get; init; } = 0;
+
+		public override string ToString() => $"{Latitude},{Longtitude}";
 	}
 
-	internal class GeocoordinateJson
+	public class GeocoordinateJson
 	{
 		public static Geocoordinate[] DeserializeArray(string json) =>
 			JsonUtilities.DeserializeArray(json, Deserialize);

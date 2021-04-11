@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Someday.SDK.APIClients.Common;
 
@@ -10,27 +9,27 @@ namespace Someday.SDK.APIClients.Google.Places
 		protected override string EndPoint => "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
 
 		public FindPlaceRequest SetApiKey(string value) =>
-			SetField("key", value);
+			SetQueryField("key", value);
 
 		public FindPlaceRequest SetInput(string value) =>
-			SetField("input", value);
+			SetQueryField("input", value);
 
 		public FindPlaceRequest SetInputType(string value) =>
-			SetField("inputtype", value);
+			SetQueryField("inputtype", value);
 
 		public FindPlaceRequest SetLanguage(string value) =>
-			SetField("language", value);
+			SetQueryField("language", value);
 
 		public FindPlaceRequest SetFields(params string[] values) =>
-			SetField("fields", string.Join(",", values));
+			SetQueryField("fields", string.Join(",", values));
 
 		public FindPlaceRequest SetLocationBias(string value) =>
-			SetField("locationbias", value);
+			SetQueryField("locationbias", value);
 
-		public async Task<List<Place>> SendAsync()
+		public async Task<Place[]> SendAsync()
 		{
 			string content = await GetAsync();
-			string candidates = JObject.Parse(content)["candidates"]!.ToObject<string>()!;
+			string candidates = JObject.Parse(content)["candidates"]!.ToString();
 			return PlaceJson.DeserializeArray(candidates);
 		}
 	}
