@@ -27,14 +27,14 @@ namespace Someday.SDK.APIClients.Here.GeocodingAndSearch
 				Title = baseResult.Title,
 				Id = baseResult.Id,
 				ResultType = baseResult.ResultType,
-				LocalityType = jObj["localityType"]!.ToObject<string>(),
-				AdministrativeAreaType = jObj["administrativeAreaType"]!.ToObject<string>(),
-				AddressBlockType = jObj["addressBlockType"]!.ToObject<string>(),
-				HouseNumberType = jObj["houseNumberType"]!.ToObject<string>(),
+				LocalityType = jObj["localityType"]?.ToObject<string>(),
+				AdministrativeAreaType = jObj["administrativeAreaType"]?.ToObject<string>(),
+				AddressBlockType = jObj["addressBlockType"]?.ToObject<string>(),
+				HouseNumberType = jObj["houseNumberType"]?.ToObject<string>(),
 				AddressInfo = AddressInfoJson.Deserialize(jObj["address"]!.ToString()),
 				Position = GeocoordinateJson.Deserialize(jObj["position"]!.ToString()),
 				MapView = BoundingBoxJson.Deserialize(jObj["mapView"]!.ToString()),
-				Access = GeocoordinateJson.DeserializeArray(jObj["access"]!.ToString()),
+				Access = jObj.ContainsKey("access") ? GeocoordinateJson.DeserializeArray(jObj["access"]!.ToString()) : null,
 			};
 		}
 	}
